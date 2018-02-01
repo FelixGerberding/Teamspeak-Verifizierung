@@ -222,9 +222,9 @@
                             GROUPSDISALLOW,
                             RULES,
                             RULESACTIVATE,
+                            json_encode($newGroups),
                             SEITENTITEL,
-                            IMPRESSUM,
-                            json_encode($newGroups)
+                            IMPRESSUM
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
