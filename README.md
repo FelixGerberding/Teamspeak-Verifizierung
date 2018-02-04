@@ -1,6 +1,6 @@
 # TeamSpeak-Verifizierung
 
-Dieses Teamspeak-Verifizierungs-Tool wurde ursprünglichj von https://github.com/Multivit4min programmiert & wird jetzt von mir weitergeführt und optimiert.
+Dieses Teamspeak-Verifizierungs-Tool wurde ursprünglichj von https://github.com/Multivit4min programmiert & wird jetzt von mir weitergeführt und optimiert. Weder seins noch mein Copyright darf entfernt werden!
 
 ## Was kann es?
 
