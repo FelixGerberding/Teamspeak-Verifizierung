@@ -1,6 +1,5 @@
 <?php
 
-    $version = "1.1";
     $error = array();
     session_start();
 
@@ -242,7 +241,7 @@
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
                     } else {
                         header("Refresh:0");
-                        die();
+                        //die();
                     }
                     break;
 
@@ -279,7 +278,7 @@
                                 $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
                             } else {
                                 header("Refresh:0");
-                                die();
+                                //die();
                             }
                         } else {
                             $error[] = array('danger', $ts3_conn_status);
@@ -316,7 +315,7 @@
                             $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
                         } else {
                             header("Refresh:0");
-                            die();
+                            //die();
                         }
                     } else {
                         $error[] = array('danger', 'Rules Text to Short!');
@@ -352,7 +351,7 @@
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
                     } else {
                         header("Refresh:0");
-                        die();
+                        //die();
                     }
                     break;
                 case 'generalsettings':
@@ -399,7 +398,7 @@
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
                     } else {
                         header("Refresh:0");
-                        die();
+                        //die();
                     }
                     break;
             }
