@@ -28,7 +28,7 @@
     */
     function writeConfig(
         $ts_ip, $ts_qport, $ts_sport, $ts_user, $ts_pass, $ts_displayname,
-        $password, $maxgroups, $rulesacceptgroup, $groupdisallow, $rules, $rulesactivate, $groups, $titel, $impressum
+        $password, $maxgroups, $rulesacceptgroup, $groupdisallow, $rules, $rulesactivate, $groups, $titel, $impressum, $ver
     ) {
         try {
             $file = fopen('config/config.php', 'w');
@@ -55,7 +55,7 @@
                 .'  define (\'GROUPS\',             \''.$groups.'\');'.PHP_EOL
                 .'  define (\'SEITENTITEL\',        \''.$titel.'\');'.PHP_EOL
                 .'  define (\'IMPRESSUM\',          \''.$impressum.'\');'.PHP_EOL
-                .'  define (\'VERSION\',            \''.$version.'\');'.PHP_EOL
+                .'  define (\'VERSION\',            \''.$ver.'\');'.PHP_EOL
             );
             fclose($file);
             return true;
@@ -236,7 +236,7 @@
                             json_encode($newGroups),
                             SEITENTITEL,
                             IMPRESSUM,
-                            $version
+                            VERSION
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -273,7 +273,7 @@
                                     GROUPS,
                                     SEITENTITEL,
                                     IMPRESSUM,
-                                    $version
+                                    VERSION
                                 )
                             ) {
                                 $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -310,7 +310,7 @@
                                 GROUPS,
                                 SEITENTITEL,
                                 IMPRESSUM,
-                                $version
+                                VERSION
                             )
                         ) {
                             $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -346,7 +346,7 @@
                             GROUPS,
                             SEITENTITEL,
                             IMPRESSUM,
-                            $version
+                            VERSION
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -393,7 +393,7 @@
                             GROUPS,
                             SEITENTITEL,
                             IMPRESSUM,
-                            $version
+                            VERSION
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
