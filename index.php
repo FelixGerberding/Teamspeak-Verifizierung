@@ -26,6 +26,15 @@
         return $ts3;
     }
 
+    function versionCheck() {
+      $version = file_get_contents("https://api.opossumts.net/version/verifizierung.txt");
+      if ($version == VERSION){
+          return(true);
+      } else {
+          return(false);
+      }
+    }
+
     function getClientIp() {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))
             return $_SERVER['HTTP_CLIENT_IP'];
@@ -51,6 +60,11 @@
             $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
         return $randomString;
+    }
+
+    if (!versionCheck()) {
+      $version = file_get_contents("https://api.opossumts.net/version/verifizierung.txt");
+      echo "<div class='new-version'>Bitte auf die neuste Version " . $version . "updaten</div>";
     }
 
 
@@ -264,10 +278,9 @@
     <head>
         <title><?php echo SEITENTITEL ?></title>
         <link href="style/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://www.opossumts.net/style/A.style-2.css,qm=1516980539.pagespeed.cf.aLAxaP_MNG.css" rel="stylesheet">
-    </head>
+        <link href="https://www.opossumts.net/style/style-2.css" rel="stylesheet">
     <body onload="check()">
-      <script src="style/js/lazyload.js?v=1" type="text/javascript"></script>
+      <script src="style/js/ajax.js?v=1" type="text/javascript"></script>
         <div class="row-fluid">
         <?php foreach ($error as $e) { ?>
             <div class="alert alert-<?php echo $e[0]; ?>" role="alert"><?php echo $e[1]; ?></div>
@@ -309,15 +322,14 @@
                                     </div>
                                 <?php } ?>
                                 <div class="form-group">
-                                    <div class="pull-right">
-                                        <button type="submit" class="btn btn-primary">Verifizieren</button>
+                                    <div class="pull-right" id="form">
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a> <?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e203c646976207374796c653d22666f6e742d73697a653a3130223e4261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e3c2f6469763e'); ?>
+                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
                     </div>
                 </div>
             <?php } ?>
@@ -346,7 +358,7 @@
                         </div>
                     </div>
                     <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a> <?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e203c646976207374796c653d22666f6e742d73697a653a3130223e4261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e3c2f6469763e'); ?>
+                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
                     </div>
                 </div>
             <?php } ?>
@@ -371,7 +383,7 @@
                         </div>
                     </div>
                     <div class="container">
-                      <a href="<?php echo IMPRESSUM ?>">Impressum</a> <?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e203c646976207374796c653d22666f6e742d73697a653a3130223e4261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e3c2f6469763e'); ?>
+                      <a href="<?php echo IMPRESSUM ?>">Impressum</a>
                     </div>
                 </div>
             <?php } ?>
@@ -414,7 +426,7 @@
                         </div>
                     </div>
                     <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a> <?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e203c646976207374796c653d22666f6e742d73697a653a3130223e4261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e3c2f6469763e'); ?>
+                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
                     </div>
                 </div>
                 <script>
@@ -451,8 +463,8 @@
                 </script>
             <?php } ?>
         </div>
+        <div style="position: absolute; right: 10px; bottom: 10px;"><?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e204261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e'); ?></div>
     </body>
     <script src="style/js/jquery.min.js"></script>
     <script src="style/js/bootstrap.min.js"></script>
-    <script src="style/js/lazyload.js"></script>
 </html>

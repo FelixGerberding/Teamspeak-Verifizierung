@@ -16,7 +16,6 @@
         return $type[count($matches)-1];
     }
 
-
     function ts3connect() {
         require_once('libraries/TeamSpeak3/TeamSpeak3.php');
         if (strlen(QUERYDISPLAYNAME) < 3) {

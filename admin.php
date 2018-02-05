@@ -1,5 +1,6 @@
 <?php
 
+    $version = "1.1";
     $error = array();
     session_start();
 
@@ -54,6 +55,7 @@
                 .'  define (\'GROUPS\',             \''.$groups.'\');'.PHP_EOL
                 .'  define (\'SEITENTITEL\',        \''.$titel.'\');'.PHP_EOL
                 .'  define (\'IMPRESSUM\',          \''.$impressum.'\');'.PHP_EOL
+                .'  define (\'VERSION\',            \''.$version.'\');'.PHP_EOL
             );
             fclose($file);
             return true;
@@ -103,9 +105,9 @@
                     $_SESSION['ts']['sport'] = $_POST['ts_sport'];
                     $_SESSION['ts']['user'] = $_POST['ts_user'];
                     $_SESSION['ts']['pass'] = $_POST['ts_pass'];
-                    $_SESSION['ts']['displayname'] =
-                    $_SESSION['impressum'] = $_POST['impressum'];
+                    $_SESSION['ts']['displayname'] = $_POST['ts_displayname'];
                     $_SESSION['seitentitel'] = $_POST['seitentitel'];
+                    $_SESSION['impressum'] = $_POST['impressum'];
                     $_SESSION['step']['admin'] = 'setup_complete';
                 } else {
                     $error[] = array('danger', $ts3_conn_status);
@@ -125,12 +127,20 @@
                 'status' => $ts3status
             );
 
+            if (!file_exists('config/')) {
+              mkdir('config', 0777, true);
+            }
+
+            if (!file_exists('icons/')) {
+              mkdir('icons', 0777, true);
+            }
+
             $setup_steps[] = array(
                 'text' => "Config-Ordner beschreibbar (chmod 777)",
                 'status' => is_writable('config/')
             );
             $setup_steps[] = array(
-                'text' => 'Icon-Ordner beschreibbar (chmod 777)',
+                'text' => 'Icons-Ordner beschreibbar (chmod 777)',
                 'status' => is_writable('icons/')
             );
             if (!empty($_GET['complete'])) {
@@ -156,7 +166,8 @@
                             'false',
                             '[]',
                             $_SESSION['seitentitel'],
-                            $_SESSION['impressum']
+                            $_SESSION['impressum'],
+                            $version
                         )
                     ) {
                         $error[] = array('danger', 'Die Config-Datei konnte nicht erstellt werden, bitte überprüfe die Dateirechte.');
@@ -224,7 +235,8 @@
                             RULESACTIVATE,
                             json_encode($newGroups),
                             SEITENTITEL,
-                            IMPRESSUM
+                            IMPRESSUM,
+                            $version
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -260,7 +272,8 @@
                                     RULESACTIVATE,
                                     GROUPS,
                                     SEITENTITEL,
-                                    IMPRESSUM
+                                    IMPRESSUM,
+                                    $version
                                 )
                             ) {
                                 $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -296,7 +309,8 @@
                                 RULESACTIVATE,
                                 GROUPS,
                                 SEITENTITEL,
-                                IMPRESSUM
+                                IMPRESSUM,
+                                $version
                             )
                         ) {
                             $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -331,7 +345,8 @@
                             RULESACTIVATE,
                             GROUPS,
                             SEITENTITEL,
-                            IMPRESSUM
+                            IMPRESSUM,
+                            $version
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
@@ -377,7 +392,8 @@
                             $enablerules,
                             GROUPS,
                             SEITENTITEL,
-                            IMPRESSUM
+                            IMPRESSUM,
+                            $version
                         )
                     ) {
                         $error[] = array('danger', 'Fehlerhafte Dateirechte, bitte setzt die Rechte auf 777!');
