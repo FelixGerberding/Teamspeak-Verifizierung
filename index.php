@@ -26,14 +26,6 @@
         return $ts3;
     }
 
-    function versionCheck() {
-      $version = file_get_contents("https://api.opossumts.net/version/verifizierung.txt");
-      if ($version == VERSION){
-          return(true);
-      } else {
-          return(false);
-      }
-    }
 
     function getClientIp() {
         if (!empty($_SERVER['HTTP_CLIENT_IP']))
@@ -62,9 +54,11 @@
         return $randomString;
     }
 
-    if (!versionCheck()) {
-      $version = file_get_contents("https://api.opossumts.net/version/verifizierung.txt");
-      echo "<div class='new-version'>Bitte auf die neuste Version " . $version . "updaten</div>";
+    $version = file_get_contents("https://api.opossumts.net/version/verifizierungssystem.php");
+    if (file_exists('config/config.php')){
+      if ($version != VERSION){
+        echo "<div class='alert alert-danger'>Bitte auf die neuste Version " . $version . "updaten</div>";
+      }
     }
 
 
@@ -215,7 +209,7 @@
                         }
                     }
                 } else {
-                    $error[] = array('danger', 'Spam-Schutz - Bitte warte 15 Minuten mit dem versenden weiterer Codes!');
+                    $error[] = array('danger', 'Spam-Schutz - Bitte warte 15 Minuten mit dem Versenden weiterer Codes!');
                 }
             }
         }
@@ -278,15 +272,13 @@
     <head>
         <title><?php echo SEITENTITEL ?></title>
         <link href="style/css/bootstrap.min.css" rel="stylesheet">
-        <link href="https://www.opossumts.net/style/style-2.css" rel="stylesheet">
     <body onload="check()">
-      <script src="style/js/ajax.js?v=1" type="text/javascript"></script>
         <div class="row-fluid">
         <?php foreach ($error as $e) { ?>
             <div class="alert alert-<?php echo $e[0]; ?>" role="alert"><?php echo $e[1]; ?></div>
         <?php } ?>
             <?php if ($_SESSION['step']['client'] == 'client_selection') { ?>
-                <div style="margin-top:5%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
+                <div style="float: none;margin: 0 auto;margin-top: 10%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h5><b><font color="#fcfcfc">Client zur Verifizierung auswählen</font></b></h5>
@@ -328,13 +320,10 @@
                             </form>
                         </div>
                     </div>
-                    <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
-                    </div>
                 </div>
             <?php } ?>
             <?php if ($_SESSION['step']['client'] == 'verify') { ?>
-                <div style="margin-top:5%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
+                <div style="float: none;margin: 0 auto;margin-top: 10%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h5><b><font color="#fcfcfc">Gebe den Verifizierungscode ein</font></b></h5>
@@ -357,13 +346,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
-                    </div>
                 </div>
             <?php } ?>
             <?php if ($_SESSION['step']['client'] == 'rules') { ?>
-                <div style="margin-top:5%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
+                <div style="float: none;margin: 0 auto;margin-top: 10%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h5><b><font color="#fcfcfc">Regeln</font></b></h5>
@@ -382,9 +368,6 @@
                             </center>
                         </div>
                     </div>
-                    <div class="container">
-                      <a href="<?php echo IMPRESSUM ?>">Impressum</a>
-                    </div>
                 </div>
             <?php } ?>
             <?php if ($_SESSION['step']['client'] == 'assigner') { ?>
@@ -393,7 +376,7 @@
                         opacity: 0.1;
                     }
                 </style>
-                <div style="margin-top:5%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
+                <div style="float: none;margin: 0 auto;margin-top: 10%;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-lg-4 col-sm-offset-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h5><b><font color="#fcfcfc">Gruppenzuweisung</font></b><span class="badge pull-right" id="grpdisplay">0 von 0 Gruppen zugewiesen</span></h5>
@@ -424,9 +407,6 @@
                                 <?php $i++;}} ?>
                             </table>
                         </div>
-                    </div>
-                    <div class="container">
-                        <a href="<?php echo IMPRESSUM ?>">Impressum</a>
                     </div>
                 </div>
                 <script>
@@ -463,8 +443,21 @@
                 </script>
             <?php } ?>
         </div>
-        <div style="position: absolute; right: 10px; bottom: 10px;"><?php echo hex2bin('3c646976207374796c653d22706f736974696f6e3a6162736f756c74653b2072696768743a313070783b223e3c702069643d22636f70797269676874223e5665726966697a696572756e677373797374656d20766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e203c62723e204261736564206f6e2047726f75702d41737369676e6572206279203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f4d756c7469766974346d696e223e4d756c7469766974346d696e3c2f613e3c2f6469763e3c2f703e'); ?></div>
+        <?php if(file_exists("config/config.php")){ ?>
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12">
+                  <ul class="nav nav-pills nav-justified" id="verifyfooter">
+                      <li><a href="<?php echo IMPRESSUM ?>">Impressum</a></li>
+                      <li><a href="ts3server://<?php echo IP ?>?port=<?php echo SERVERPORT ?>">Server betreten</a></li>
+                      <li><?php echo hex2bin('3c702069643d22636f70797269676874223e54532d5665726966697a696572756e6720766f6e203c6120687265663d2268747470733a2f2f7777772e6f706f7373756d74732e6e6574223e4f706f7373756d54532e6e65743c2f613e3c62723e456e747769636b656c7420766f6e203c6120687265663d2268747470733a2f2f6769746875622e636f6d2f44724f706f7373756d223e44724f706f7373756d3c2f613e2026204d756c7469766974346d696e3c2f703e'); ?></li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+      <?php } ?>
     </body>
     <script src="style/js/jquery.min.js"></script>
     <script src="style/js/bootstrap.min.js"></script>
+    <script src="style/js/core.js" type="text/javascript"></script>
 </html>
