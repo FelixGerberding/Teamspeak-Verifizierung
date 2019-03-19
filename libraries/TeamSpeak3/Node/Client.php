@@ -4,8 +4,6 @@
  * @file
  * TeamSpeak 3 PHP Framework
  *
- * $Id: Client.php 10/11/2013 11:35:21 scp@orilla $
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package   TeamSpeak3
- * @version   1.1.23
  * @author    Sven 'ScP' Paulsen
- * @copyright Copyright (c) 2010 by Planet TeamSpeak. All rights reserved.
+ * @copyright Copyright (c) Planet TeamSpeak. All rights reserved.
  */
 
 /**
@@ -75,7 +72,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function modifyDb(array $properties)
   {
-    return $this->getParent()->clientModifyDb($this["client_database_id"], $properties);
+    $this->getParent()->clientModifyDb($this["client_database_id"], $properties);
   }
 
   /**
@@ -85,7 +82,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function deleteDb()
   {
-    return $this->getParent()->clientDeleteDb($this["client_database_id"]);
+    $this->getParent()->clientDeleteDb($this["client_database_id"]);
   }
 
   /**
@@ -118,7 +115,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function move($cid, $cpw = null)
   {
-    return $this->getParent()->clientMove($this->getId(), $cid, $cpw);
+    $this->getParent()->clientMove($this->getId(), $cid, $cpw);
   }
 
   /**
@@ -130,7 +127,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function kick($reasonid = TeamSpeak3::KICK_CHANNEL, $reasonmsg = null)
   {
-    return $this->getParent()->clientKick($this->getId(), $reasonid, $reasonmsg);
+    $this->getParent()->clientKick($this->getId(), $reasonid, $reasonmsg);
   }
 
   /**
@@ -141,7 +138,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function poke($msg)
   {
-    return $this->getParent()->clientPoke($this->getId(), $msg);
+    $this->getParent()->clientPoke($this->getId(), $msg);
   }
 
   /**
@@ -165,6 +162,29 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
   public function customInfo()
   {
     return $this->getParent()->customInfo($this["client_database_id"]);
+  }
+
+  /**
+   * Creates or updates a custom property for the client.
+   *
+   * @param  string $ident
+   * @param  string $value
+   * @return void
+   */
+  public function customSet($ident, $value)
+  {
+    $this->getParent()->customSet($this["client_database_id"], $ident, $value);
+  }
+
+  /**
+   * Removes a custom property from the client.
+   *
+   * @param  string $ident
+   * @return void
+   */
+  public function customDelete($ident)
+  {
+    $this->getParent()->customDelete($this["client_database_id"], $ident);
   }
 
   /**
@@ -200,7 +220,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function permAssign($permid, $permvalue, $permskip = FALSE)
   {
-    return $this->getParent()->clientPermAssign($this["client_database_id"], $permid, $permvalue, $permskip);
+    $this->getParent()->clientPermAssign($this["client_database_id"], $permid, $permvalue, $permskip);
   }
 
   /**
@@ -210,7 +230,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function permAssignByName($permname, $permvalue, $permskip = FALSE)
   {
-    return $this->permAssign($permname, $permvalue, $permskip);
+    $this->permAssign($permname, $permvalue, $permskip);
   }
 
   /**
@@ -221,7 +241,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function permRemove($permid)
   {
-    return $this->getParent()->clientPermRemove($this["client_database_id"], $permid);
+    $this->getParent()->clientPermRemove($this["client_database_id"], $permid);
   }
 
   /**
@@ -231,7 +251,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function permRemoveByName($permname)
   {
-    return $this->permRemove($permname);
+    $this->permRemove($permname);
   }
 
   /**
@@ -243,7 +263,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function setChannelGroup($cid, $cgid)
   {
-    return $this->getParent()->clientSetChannelGroup($this["client_database_id"], $cid, $cgid);
+    $this->getParent()->clientSetChannelGroup($this["client_database_id"], $cid, $cgid);
   }
 
   /**
@@ -254,7 +274,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function addServerGroup($sgid)
   {
-    return $this->getParent()->serverGroupClientAdd($sgid, $this["client_database_id"]);
+    $this->getParent()->serverGroupClientAdd($sgid, $this["client_database_id"]);
   }
 
   /**
@@ -265,7 +285,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function remServerGroup($sgid)
   {
-    return $this->getParent()->serverGroupClientDel($sgid, $this["client_database_id"]);
+    $this->getParent()->serverGroupClientDel($sgid, $this["client_database_id"]);
   }
 
   /**
@@ -285,10 +305,10 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function avatarDownload()
   {
-    if($this["client_flag_avatar"] == 0) return;
+    if($this["client_flag_avatar"] == NULL) return;
 
     $download = $this->getParent()->transferInitDownload(rand(0x0000, 0xFFFF), 0, $this->avatarGetName());
-    $transfer = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"]);
+    $transfer = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"]);
 
     return $transfer->download($download["ftkey"], $download["size"]);
   }
@@ -301,6 +321,36 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
   public function getClones()
   {
     return $this->execute("clientgetids", array("cluid" => $this["client_unique_identifier"]))->toAssocArray("clid");
+  }
+
+  /**
+   * Returns TRUE if the client is using Overwolf.
+   *
+   * @return boolean
+   */
+  public function hasOverwolf()
+  {
+    return strstr($this["client_badges"], "overwolf=1") !== FALSE;
+  }
+
+  /**
+   * Returns a list of equipped badges for this client.
+   *
+   * @return array
+   */
+  public function getBadges()
+  {
+    $badges = array();
+
+    foreach(explode(":", $this["client_badges"]) as $set)
+    {
+      if(substr($set, 0, 7) == "badges=")
+      {
+        $badges[] = array_map("trim", explode(",", substr($set, 7)));
+      }
+    }
+
+    return $badges;
   }
 
   /**
@@ -320,14 +370,17 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   public function memberOf()
   {
-    $groups = array($this->getParent()->channelGroupGetById($this["client_channel_group_id"]));
+    $cgroups = array($this->getParent()->channelGroupGetById($this["client_channel_group_id"]));
+    $sgroups = array();
 
     foreach(explode(",", $this["client_servergroups"]) as $sgid)
     {
-      $groups[] = $this->getParent()->serverGroupGetById($sgid);
+      $sgroups[] = $this->getParent()->serverGroupGetById($sgid);
     }
 
-    return $groups;
+    uasort($sgroups, array(__CLASS__, "sortGroupList"));
+
+    return array_merge($cgroups, $sgroups);
   }
 
   /**
@@ -340,7 +393,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
     if($this->iconIsLocal("client_icon_id") || $this["client_icon_id"] == 0) return;
 
     $download = $this->getParent()->transferInitDownload(rand(0x0000, 0xFFFF), 0, $this->iconGetName("client_icon_id"));
-    $transfer = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"]);
+    $transfer = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"]);
 
     return $transfer->download($download["ftkey"], $download["size"]);
   }
@@ -362,7 +415,7 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
    */
   protected function fetchNodeInfo()
   {
-    if($this["client_type"] == 1) return;
+    if($this->offsetExists("client_type") && $this["client_type"] == 1) return;
 
     $this->nodeInfo = array_merge($this->nodeInfo, $this->execute("clientinfo", array("clid" => $this->getId()))->toList());
   }
@@ -438,4 +491,3 @@ class TeamSpeak3_Node_Client extends TeamSpeak3_Node_Abstract
     return (string) $this["client_nickname"];
   }
 }
-

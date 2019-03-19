@@ -4,8 +4,6 @@
  * @file
  * TeamSpeak 3 PHP Framework
  *
- * $Id: Servergroup.php 10/11/2013 11:35:21 scp@orilla $
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package   TeamSpeak3
- * @version   1.1.23
  * @author    Sven 'ScP' Paulsen
- * @copyright Copyright (c) 2010 by Planet TeamSpeak. All rights reserved.
+ * @copyright Copyright (c) Planet TeamSpeak. All rights reserved.
  */
 
 /**
@@ -61,7 +58,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function rename($name)
   {
-    return $this->getParent()->serverGroupRename($this->getId(), $name);
+    $this->getParent()->serverGroupRename($this->getId(), $name);
   }
 
   /**
@@ -74,8 +71,6 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
   public function delete($force = FALSE)
   {
     $this->getParent()->serverGroupDelete($this->getId(), $force);
-
-    unset($this);
   }
 
   /**
@@ -114,7 +109,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function permAssign($permid, $permvalue, $permnegated = FALSE, $permskip = FALSE)
   {
-    return $this->getParent()->serverGroupPermAssign($this->getId(), $permid, $permvalue, $permnegated, $permskip);
+    $this->getParent()->serverGroupPermAssign($this->getId(), $permid, $permvalue, $permnegated, $permskip);
   }
 
   /**
@@ -124,7 +119,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function permAssignByName($permname, $permvalue, $permnegated = FALSE, $permskip = FALSE)
   {
-    return $this->permAssign($permname, $permvalue, $permnegated, $permskip);
+    $this->permAssign($permname, $permvalue, $permnegated, $permskip);
   }
 
   /**
@@ -136,7 +131,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function permRemove($permid)
   {
-    return $this->getParent()->serverGroupPermRemove($this->getId(), $permid);
+    $this->getParent()->serverGroupPermRemove($this->getId(), $permid);
   }
 
   /**
@@ -146,7 +141,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function permRemoveByName($permname)
   {
-    return $this->permRemove($permname);
+    $this->permRemove($permname);
   }
 
   /**
@@ -168,7 +163,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function clientAdd($cldbid)
   {
-    return $this->getParent()->serverGroupClientAdd($this->getId(), $cldbid);
+    $this->getParent()->serverGroupClientAdd($this->getId(), $cldbid);
   }
 
   /**
@@ -179,7 +174,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
    */
   public function clientDel($cldbid)
   {
-    return $this->getParent()->serverGroupClientDel($this->getId(), $cldbid);
+    $this->getParent()->serverGroupClientDel($this->getId(), $cldbid);
   }
 
   /**
@@ -236,7 +231,7 @@ class TeamSpeak3_Node_Servergroup extends TeamSpeak3_Node_Abstract
     if($this->iconIsLocal("iconid") || $this["iconid"] == 0) return;
 
     $download = $this->getParent()->transferInitDownload(rand(0x0000, 0xFFFF), 0, $this->iconGetName("iconid"));
-    $transfer = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"]);
+    $transfer = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"]);
 
     return $transfer->download($download["ftkey"], $download["size"]);
   }

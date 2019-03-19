@@ -4,8 +4,6 @@
  * @file
  * TeamSpeak 3 PHP Framework
  *
- * $Id: TeamSpeak3.php 10/11/2013 11:35:21 scp@orilla $
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package   TeamSpeak3
- * @version   1.1.23
  * @author    Sven 'ScP' Paulsen
- * @copyright Copyright (c) 2010 by Planet TeamSpeak. All rights reserved.
+ * @copyright Copyright (c) Planet TeamSpeak. All rights reserved.
  */
 
 /**
@@ -34,12 +31,22 @@ class TeamSpeak3
   /**
    * TeamSpeak 3 protocol welcome message.
    */
-  const READY = "TS3";
+  const TS3_PROTO_IDENT = "TS3";
 
   /**
    * TeamSpeak 3 protocol greeting message prefix.
    */
-  const GREET = "Welcome";
+  const TS3_MOTD_PREFIX = "Welcome";
+
+  /**
+   * TeaSpeak protocol welcome message.
+   */
+  const TEA_PROTO_IDENT = "TeaSpeak";
+
+  /**
+   * TeaSpeak protocol greeting message prefix.
+   */
+  const TEA_MOTD_PREFIX = "Welcome";
 
   /**
    * TeamSpeak 3 protocol error message prefix.
@@ -59,61 +66,61 @@ class TeamSpeak3
   /**
    * TeamSpeak 3 PHP Framework version.
    */
-  const LIB_VERSION = "1.1.23";
+  const LIB_VERSION = "1.1.34";
 
   /*@
    * TeamSpeak 3 protocol separators.
    */
-  const SEPARATOR_LINE               = "\n"; //!< protocol line separator
-  const SEPARATOR_LIST               = "|";  //!< protocol list separator
-  const SEPARATOR_CELL               = " ";  //!< protocol cell separator
-  const SEPARATOR_PAIR               = "=";  //!< protocol pair separator
+  const SEPARATOR_LINE = "\n"; //!< protocol line separator
+  const SEPARATOR_LIST = "|";  //!< protocol list separator
+  const SEPARATOR_CELL = " ";  //!< protocol cell separator
+  const SEPARATOR_PAIR = "=";  //!< protocol pair separator
 
   /*@
    * TeamSpeak 3 log levels.
    */
-  const LOGLEVEL_CRITICAL            = 0x00; //!< 0: these messages stop the program
-  const LOGLEVEL_ERROR               = 0x01; //!< 1: everything that is really bad
-  const LOGLEVEL_WARNING             = 0x02; //!< 2: everything that might be bad
-  const LOGLEVEL_DEBUG               = 0x03; //!< 3: output that might help find a problem
-  const LOGLEVEL_INFO                = 0x04; //!< 4: informational output
-  const LOGLEVEL_DEVEL               = 0x05; //!< 5: development output
+  const LOGLEVEL_CRITICAL = 0x00; //!< 0: these messages stop the program
+  const LOGLEVEL_ERROR    = 0x01; //!< 1: everything that is really bad
+  const LOGLEVEL_WARNING  = 0x02; //!< 2: everything that might be bad
+  const LOGLEVEL_DEBUG    = 0x03; //!< 3: output that might help find a problem
+  const LOGLEVEL_INFO     = 0x04; //!< 4: informational output
+  const LOGLEVEL_DEVEL    = 0x05; //!< 5: development output
 
   /*@
    * TeamSpeak 3 token types.
    */
-  const TOKEN_SERVERGROUP            = 0x00; //!< 0: server group token  (id1={groupID} id2=0)
-  const TOKEN_CHANNELGROUP           = 0x01; //!< 1: channel group token (id1={groupID} id2={channelID})
+  const TOKEN_SERVERGROUP  = 0x00; //!< 0: server group token  (id1={groupID} id2=0)
+  const TOKEN_CHANNELGROUP = 0x01; //!< 1: channel group token (id1={groupID} id2={channelID})
 
   /*@
    * TeamSpeak 3 codec identifiers.
    */
-  const CODEC_SPEEX_NARROWBAND       = 0x00; //!< 0: speex narrowband     (mono, 16bit, 8kHz)
-  const CODEC_SPEEX_WIDEBAND         = 0x01; //!< 1: speex wideband       (mono, 16bit, 16kHz)
-  const CODEC_SPEEX_ULTRAWIDEBAND    = 0x02; //!< 2: speex ultra-wideband (mono, 16bit, 32kHz)
-  const CODEC_CELT_MONO              = 0x03; //!< 3: celt mono            (mono, 16bit, 48kHz)
-  const CODEC_OPUS_VOICE             = 0x04; //!< 3: opus voice           (interactive)
-  const CODEC_OPUS_MUSIC             = 0x05; //!< 3: opus music           (interactive)
+  const CODEC_SPEEX_NARROWBAND    = 0x00; //!< 0: speex narrowband     (mono, 16bit, 8kHz)
+  const CODEC_SPEEX_WIDEBAND      = 0x01; //!< 1: speex wideband       (mono, 16bit, 16kHz)
+  const CODEC_SPEEX_ULTRAWIDEBAND = 0x02; //!< 2: speex ultra-wideband (mono, 16bit, 32kHz)
+  const CODEC_CELT_MONO           = 0x03; //!< 3: celt mono            (mono, 16bit, 48kHz)
+  const CODEC_OPUS_VOICE          = 0x04; //!< 3: opus voice           (interactive)
+  const CODEC_OPUS_MUSIC          = 0x05; //!< 3: opus music           (interactive)
 
   /*@
    * TeamSpeak 3 codec encryption modes.
    */
-  const CODEC_CRYPT_INDIVIDUAL       = 0x00; //!< 0: configure per channel
-  const CODEC_CRYPT_DISABLED         = 0x01; //!< 1: globally disabled
-  const CODEC_CRYPT_ENABLED          = 0x02; //!< 2: globally enabled
+  const CODEC_CRYPT_INDIVIDUAL = 0x00; //!< 0: configure per channel
+  const CODEC_CRYPT_DISABLED   = 0x01; //!< 1: globally disabled
+  const CODEC_CRYPT_ENABLED    = 0x02; //!< 2: globally enabled
 
   /*@
    * TeamSpeak 3 kick reason types.
    */
-  const KICK_CHANNEL                 = 0x04; //!< 4: kick client from channel
-  const KICK_SERVER                  = 0x05; //!< 5: kick client from server
+  const KICK_CHANNEL = 0x04; //!< 4: kick client from channel
+  const KICK_SERVER  = 0x05; //!< 5: kick client from server
 
   /*@
    * TeamSpeak 3 text message target modes.
    */
-  const TEXTMSG_CLIENT               = 0x01; //!< 1: target is a client
-  const TEXTMSG_CHANNEL              = 0x02; //!< 2: target is a channel
-  const TEXTMSG_SERVER               = 0x03; //!< 3: target is a virtual server
+  const TEXTMSG_CLIENT  = 0x01; //!< 1: target is a client
+  const TEXTMSG_CHANNEL = 0x02; //!< 2: target is a channel
+  const TEXTMSG_SERVER  = 0x03; //!< 3: target is a virtual server
   
   /*@
    * TeamSpeak 3 plugin command target modes.
@@ -126,52 +133,52 @@ class TeamSpeak3
   /*@
    * TeamSpeak 3 host message modes.
    */
-  const HOSTMSG_NONE                 = 0x00; //!< 0: display no message
-  const HOSTMSG_LOG                  = 0x01; //!< 1: display message in chatlog
-  const HOSTMSG_MODAL                = 0x02; //!< 2: display message in modal dialog
-  const HOSTMSG_MODALQUIT            = 0x03; //!< 3: display message in modal dialog and close connection
+  const HOSTMSG_NONE      = 0x00; //!< 0: display no message
+  const HOSTMSG_LOG       = 0x01; //!< 1: display message in chatlog
+  const HOSTMSG_MODAL     = 0x02; //!< 2: display message in modal dialog
+  const HOSTMSG_MODALQUIT = 0x03; //!< 3: display message in modal dialog and close connection
 
   /*@
    * TeamSpeak 3 host banner modes.
    */
-  const HOSTBANNER_NO_ADJUST         = 0x00; //!< 0: do not adjust
-  const HOSTBANNER_IGNORE_ASPECT     = 0x01; //!< 1: adjust but ignore aspect ratio
-  const HOSTBANNER_KEEP_ASPECT       = 0x02; //!< 2: adjust and keep aspect ratio
+  const HOSTBANNER_NO_ADJUST     = 0x00; //!< 0: do not adjust
+  const HOSTBANNER_IGNORE_ASPECT = 0x01; //!< 1: adjust but ignore aspect ratio
+  const HOSTBANNER_KEEP_ASPECT   = 0x02; //!< 2: adjust and keep aspect ratio
 
   /*@
    * TeamSpeak 3 client identification types.
    */
-  const CLIENT_TYPE_REGULAR          = 0x00; //!< 0: regular client
-  const CLIENT_TYPE_SERVERQUERY      = 0x01; //!< 1: query client
+  const CLIENT_TYPE_REGULAR     = 0x00; //!< 0: regular client
+  const CLIENT_TYPE_SERVERQUERY = 0x01; //!< 1: query client
 
   /*@
    * TeamSpeak 3 permission group database types.
    */
-  const GROUP_DBTYPE_TEMPLATE        = 0x00; //!< 0: template group     (used for new virtual servers)
-  const GROUP_DBTYPE_REGULAR         = 0x01; //!< 1: regular group      (used for regular clients)
-  const GROUP_DBTYPE_SERVERQUERY     = 0x02; //!< 2: global query group (used for ServerQuery clients)
+  const GROUP_DBTYPE_TEMPLATE    = 0x00; //!< 0: template group     (used for new virtual servers)
+  const GROUP_DBTYPE_REGULAR     = 0x01; //!< 1: regular group      (used for regular clients)
+  const GROUP_DBTYPE_SERVERQUERY = 0x02; //!< 2: global query group (used for ServerQuery clients)
 
   /*@
    * TeamSpeak 3 permission group name modes.
    */
-  const GROUP_NAMEMODE_HIDDEN        = 0x00; //!< 0: display no name
-  const GROUP_NAMEMODE_BEFORE        = 0x01; //!< 1: display name before client nickname
-  const GROUP_NAMEMODE_BEHIND        = 0x02; //!< 2: display name after client nickname
+  const GROUP_NAMEMODE_HIDDEN = 0x00; //!< 0: display no name
+  const GROUP_NAMEMODE_BEFORE = 0x01; //!< 1: display name before client nickname
+  const GROUP_NAMEMODE_BEHIND = 0x02; //!< 2: display name after client nickname
 
   /*@
    * TeamSpeak 3 permission group identification types.
    */
-  const GROUP_IDENTIFIY_STRONGEST    = 0x01; //!< 1: identify most powerful group
-  const GROUP_IDENTIFIY_WEAKEST      = 0x02; //!< 2: identify weakest group
+  const GROUP_IDENTIFIY_STRONGEST = 0x01; //!< 1: identify most powerful group
+  const GROUP_IDENTIFIY_WEAKEST   = 0x02; //!< 2: identify weakest group
 
   /*@
    * TeamSpeak 3 permission types.
    */
-  const PERM_TYPE_SERVERGROUP        = 0x00; //!< 0: server group permission
-  const PERM_TYPE_CLIENT             = 0x01; //!< 1: client specific permission
-  const PERM_TYPE_CHANNEL            = 0x02; //!< 2: channel specific permission
-  const PERM_TYPE_CHANNELGROUP       = 0x03; //!< 3: channel group permission
-  const PERM_TYPE_CHANNELCLIENT      = 0x04; //!< 4: channel-client specific permission
+  const PERM_TYPE_SERVERGROUP   = 0x00; //!< 0: server group permission
+  const PERM_TYPE_CLIENT        = 0x01; //!< 1: client specific permission
+  const PERM_TYPE_CHANNEL       = 0x02; //!< 2: channel specific permission
+  const PERM_TYPE_CHANNELGROUP  = 0x03; //!< 3: channel group permission
+  const PERM_TYPE_CHANNELCLIENT = 0x04; //!< 4: channel-client specific permission
 
   /*@
    * TeamSpeak 3 permission categories.
@@ -207,49 +214,49 @@ class TeamSpeak3
   /*@
    * TeamSpeak 3 file types.
    */
-  const FILE_TYPE_DIRECTORY          = 0x00; //!< 0: file is directory
-  const FILE_TYPE_REGULAR            = 0x01; //!< 1: file is regular
+  const FILE_TYPE_DIRECTORY = 0x00; //!< 0: file is directory
+  const FILE_TYPE_REGULAR   = 0x01; //!< 1: file is regular
 
   /*@
    * TeamSpeak 3 server snapshot types.
    */
-  const SNAPSHOT_STRING              = 0x00; //!< 0: default string
-  const SNAPSHOT_BASE64              = 0x01; //!< 1: base64 string
-  const SNAPSHOT_HEXDEC              = 0x02; //!< 2: hexadecimal string
+  const SNAPSHOT_STRING = 0x00; //!< 0: default string
+  const SNAPSHOT_BASE64 = 0x01; //!< 1: base64 string
+  const SNAPSHOT_HEXDEC = 0x02; //!< 2: hexadecimal string
 
   /*@
    * TeamSpeak 3 channel spacer types.
    */
-  const SPACER_SOLIDLINE             = 0x00; //!< 0: solid line
-  const SPACER_DASHLINE              = 0x01; //!< 1: dash line
-  const SPACER_DOTLINE               = 0x02; //!< 2: dot line
-  const SPACER_DASHDOTLINE           = 0x03; //!< 3: dash dot line
-  const SPACER_DASHDOTDOTLINE        = 0x04; //!< 4: dash dot dot line
-  const SPACER_CUSTOM                = 0x05; //!< 5: custom format
+  const SPACER_SOLIDLINE      = 0x00; //!< 0: solid line
+  const SPACER_DASHLINE       = 0x01; //!< 1: dash line
+  const SPACER_DOTLINE        = 0x02; //!< 2: dot line
+  const SPACER_DASHDOTLINE    = 0x03; //!< 3: dash dot line
+  const SPACER_DASHDOTDOTLINE = 0x04; //!< 4: dash dot dot line
+  const SPACER_CUSTOM         = 0x05; //!< 5: custom format
 
   /*@
    * TeamSpeak 3 channel spacer alignments.
    */
-  const SPACER_ALIGN_LEFT            = 0x00; //!< 0: alignment left
-  const SPACER_ALIGN_RIGHT           = 0x01; //!< 1: alignment right
-  const SPACER_ALIGN_CENTER          = 0x02; //!< 2: alignment center
-  const SPACER_ALIGN_REPEAT          = 0x03; //!< 3: repeat until the whole line is filled
+  const SPACER_ALIGN_LEFT   = 0x00; //!< 0: alignment left
+  const SPACER_ALIGN_RIGHT  = 0x01; //!< 1: alignment right
+  const SPACER_ALIGN_CENTER = 0x02; //!< 2: alignment center
+  const SPACER_ALIGN_REPEAT = 0x03; //!< 3: repeat until the whole line is filled
 
   /*@
    * TeamSpeak 3 reason identifiers.
    */
-  const REASON_NONE                  = 0x00; //!<  0: no reason
-  const REASON_MOVE                  = 0x01; //!<  1: channel switched or moved
-  const REASON_SUBSCRIPTION          = 0x02; //!<  2: subscription added or removed
-  const REASON_TIMEOUT               = 0x03; //!<  3: client connection timed out
-  const REASON_CHANNEL_KICK          = 0x04; //!<  4: client kicked from channel
-  const REASON_SERVER_KICK           = 0x05; //!<  5: client kicked from server
-  const REASON_SERVER_BAN            = 0x06; //!<  6: client banned from server
-  const REASON_SERVER_STOP           = 0x07; //!<  7: server stopped
-  const REASON_DISCONNECT            = 0x08; //!<  8: client disconnected
-  const REASON_CHANNEL_UPDATE        = 0x09; //!<  9: channel information updated
-  const REASON_CHANNEL_EDIT          = 0x0A; //!< 10: channel information edited
-  const REASON_DISCONNECT_SHUTDOWN   = 0x0B; //!< 11: client disconnected on server shutdown
+  const REASON_NONE                = 0x00; //!<  0: no reason
+  const REASON_MOVE                = 0x01; //!<  1: channel switched or moved
+  const REASON_SUBSCRIPTION        = 0x02; //!<  2: subscription added or removed
+  const REASON_TIMEOUT             = 0x03; //!<  3: client connection timed out
+  const REASON_CHANNEL_KICK        = 0x04; //!<  4: client kicked from channel
+  const REASON_SERVER_KICK         = 0x05; //!<  5: client kicked from server
+  const REASON_SERVER_BAN          = 0x06; //!<  6: client banned from server
+  const REASON_SERVER_STOP         = 0x07; //!<  7: server stopped
+  const REASON_DISCONNECT          = 0x08; //!<  8: client disconnected
+  const REASON_CHANNEL_UPDATE      = 0x09; //!<  9: channel information updated
+  const REASON_CHANNEL_EDIT        = 0x0A; //!< 10: channel information edited
+  const REASON_DISCONNECT_SHUTDOWN = 0x0B; //!< 11: client disconnected on server shutdown
 
   /**
    * Stores an array containing various chars which need to be escaped while communicating
@@ -280,11 +287,13 @@ class TeamSpeak3
    * === Supported Options ===
    *   - timeout
    *   - blocking
+   *   - tls (TeaSpeak only)
+   *   - ssh (TeamSpeak only)
    *   - nickname
    *   - no_query_clients
    *   - use_offline_as_virtual
    *   - clients_before_channels
-   *   - server_id|server_uid|server_port|server_name|server_tsdns
+   *   - server_id|server_uid|server_port|server_name
    *   - channel_id|channel_name
    *   - client_id|client_uid|client_name
    *
@@ -295,16 +304,19 @@ class TeamSpeak3
    *
    * === URI Examples ===
    *   - serverquery://127.0.0.1:10011/
+   *   - serverquery://127.0.0.1:10022/?ssh=1 (TeamSpeak ONLY)
+   *   - serverquery://127.0.0.1:10011/?tls=1 (TeaSpeak ONLY)
+   *   - serverquery://127.0.0.1:10022/?ssh=1&server_port=9987
    *   - serverquery://127.0.0.1:10011/?server_port=9987&channel_id=1
    *   - serverquery://127.0.0.1:10011/?server_port=9987&channel_id=1#no_query_clients
    *   - serverquery://127.0.0.1:10011/?server_port=9987&client_name=ScP
    *   - filetransfer://127.0.0.1:30011/
-   *   - blacklist
-   *   - update
    *
    * @param  string $uri
    * @return TeamSpeak3_Adapter_Abstract
    * @return TeamSpeak3_Node_Abstract
+   * @return TeamSpeak3_Node_Host
+   * @return TeamSpeak3_Node_Server
    */
   public static function factory($uri)
   {
@@ -313,9 +325,15 @@ class TeamSpeak3
     $uri = new TeamSpeak3_Helper_Uri($uri);
 
     $adapter = self::getAdapterName($uri->getScheme());
-    $options = array("host" => $uri->getHost(), "port" => $uri->getPort(), "timeout" => intval($uri->getQueryVar("timeout", 10)), "blocking" => intval($uri->getQueryVar("blocking", 1)));
+    $options = array("host" => $uri->getHost(), "port" => $uri->getPort(), "timeout" => (int) $uri->getQueryVar("timeout", 10), "blocking" => (int) $uri->getQueryVar("blocking", 1), "tls" => (int) $uri->getQueryVar("tls", 0), "ssh" => (int) $uri->getQueryVar("ssh", 0));
 
     self::loadClass($adapter);
+
+    if($options["ssh"])
+    {
+      $options["username"] = $uri->getUser();
+      $options["password"] = $uri->getPass();
+    }
 
     $object = new $adapter($options);
 
@@ -328,13 +346,11 @@ class TeamSpeak3
         $node->login($uri->getUser(), $uri->getPass());
       }
 
-      /* option to pre-define nickname */
       if($uri->hasQueryVar("nickname"))
       {
         $node->setPredefinedQueryName($uri->getQueryVar("nickname"));
       }
 
-      /* flag to use offline servers in virtual mode */
       if($uri->getFragment() == "use_offline_as_virtual")
       {
         $node->setUseOfflineAsVirtual(TRUE);
@@ -344,7 +360,6 @@ class TeamSpeak3
         $node->setUseOfflineAsVirtual($uri->getQueryVar("use_offline_as_virtual") ? TRUE : FALSE);
       }
 
-      /* flag to fetch clients before sub-channels */
       if($uri->getFragment() == "clients_before_channels")
       {
         $node->setLoadClientlistFirst(TRUE);
@@ -354,7 +369,6 @@ class TeamSpeak3
         $node->setLoadClientlistFirst($uri->getQueryVar("clients_before_channels") ? TRUE : FALSE);
       }
 
-      /* flag to hide ServerQuery clients */
       if($uri->getFragment() == "no_query_clients")
       {
         $node->setExcludeQueryClients(TRUE);
@@ -364,7 +378,6 @@ class TeamSpeak3
         $node->setExcludeQueryClients($uri->getQueryVar("no_query_clients") ? TRUE : FALSE);
       }
 
-      /* access server node object */
       if($uri->hasQueryVar("server_id"))
       {
         $node = $node->serverGetById($uri->getQueryVar("server_id"));
@@ -381,15 +394,9 @@ class TeamSpeak3
       {
         $node = $node->serverGetByName($uri->getQueryVar("server_name"));
       }
-      elseif($uri->hasQueryVar("server_tsdns"))
-      {
-        $node = $node->serverGetByTSDNS($uri->getQueryVar("server_tsdns"));
-      }
 
-      /* direct access to node objects */
       if($node instanceof TeamSpeak3_Node_Server)
       {
-        /* access channel node object */
         if($uri->hasQueryVar("channel_id"))
         {
           $node = $node->channelGetById($uri->getQueryVar("channel_id"));
@@ -399,7 +406,6 @@ class TeamSpeak3
           $node = $node->channelGetByName($uri->getQueryVar("channel_name"));
         }
 
-        /* access client node object */
         if($uri->hasQueryVar("client_id"))
         {
           $node = $node->clientGetById($uri->getQueryVar("client_id"));
@@ -574,8 +580,7 @@ class TeamSpeak3
     ob_start();
     var_dump($var);
 
-    $output = ob_get_clean();
-    $output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $output);
+    $output = preg_replace("/\]\=\>\n(\s+)/m", "] => ", ob_get_clean());
 
     if(PHP_SAPI == "cli")
     {
@@ -583,7 +588,7 @@ class TeamSpeak3
     }
     else
     {
-      $output = "<pre>" . htmlspecialchars($output, ENT_QUOTES) . "</pre>";
+      $output = "<pre>" . htmlspecialchars($output, ENT_QUOTES, "utf-8") . "</pre>";
     }
 
     if($echo) echo($output);
@@ -631,7 +636,6 @@ class TeamSpeak3
  *   - Integrated full featured and customizable TSViewer interfaces
  *   - Full support for file transfers to up- and /or download custom icons and other stuff
  *   - Powerful error handling capablities using exceptions and customizable error messages
- *   - Query mechanisms for several official services such as the blacklist and auto-update servers
  *   - Dynamic signal slots for event based scripting
  *   - ...
  *
@@ -795,59 +799,7 @@ class TeamSpeak3
  *   ));
  * @endcode
  *
- * \subsection example9 9. Send a Text Message to outdated Clients
- * @code
- *   // load framework files
- *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
- *
- *   // connect to local server, authenticate and spawn an object for the virtual server on port 9987
- *   $ts3_VirtualServer = TeamSpeak3::factory("serverquery://username:password@127.0.0.1:10011/?server_port=9987");
- *
- *   // connect to default update server
- *   $ts3_UpdateServer = TeamSpeak3::factory("update");
- *
- *   // walk through list of clients on virtual server
- *   foreach($ts3_VirtualServer->clientList() as $ts3_Client)
- *   {
- *     // skip query clients
- *     if($ts3_Client["client_type"]) continue;
- *
- *     // send test message if client build is outdated
- *     if($ts3_Client->getRev() < $ts3_UpdateServer->getClientRev())
- *     {
- *       $ts3_Client->message("[COLOR=red]your client is [B]outdated[/B]... update to [U]" . $ts3_UpdateServer->getClientVersion() . "[/U] now![/COLOR]");
- *     }
- *   }
- * @endcode
- *
- * \subsection example10 10. Check if the Server Instance is Outdated or Blacklisted
- * @code
- *   // load framework files
- *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
- *
- *   // connect to local server, authenticate and spawn an object for the server instance
- *   $ts3_ServerInstance = TeamSpeak3::factory("serverquery://username:password@127.0.0.1:10011/");
- *
- *   // connect to default update server
- *   $ts3_UpdateServer = TeamSpeak3::factory("update");
- *
- *   // send global text message if the server is outdated
- *   if($ts3_ServerInstance->version("build") < $ts3_UpdateServer->getServerRev())
- *   {
- *     $ts3_ServerInstance->message("[COLOR=red]your server is [B]outdated[/B]... update to [U]" . $ts3_UpdateServer->getServerVersion() . "[/U]  now![/COLOR]");
- *   }
- *
- *   // connect to default blacklist server
- *   $ts3_BlacklistServer = TeamSpeak3::factory("blacklist");
- *
- *   // send global text message if the server is blacklisted
- *   if($ts3_BlacklistServer->isBlacklisted($ts3_ServerInstance))
- *   {
- *     $ts3_ServerInstance->message("[COLOR=red]your server is [B]blacklisted[/B]... disconnect now![/COLOR]");
- *   }
- * @endcode
- *
- * \subsection example11 11. Create a simple TSViewer for your Website
+ * \subsection example9 9. Create a simple TSViewer for your Website
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -859,7 +811,7 @@ class TeamSpeak3
  *   echo $ts3_VirtualServer->getViewer(new TeamSpeak3_Viewer_Html("images/viewericons/", "images/countryflags/", "data:image"));
  * @endcode
  *
- * \subsection example12 12. Update all outdated Audio Codecs to their Opus equivalent
+ * \subsection example10 10. Update all outdated Audio Codecs to their Opus equivalent
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -881,7 +833,7 @@ class TeamSpeak3
  *   }
  * @endcode
  *
- * \subsection example13 13. Display the Avatar of a connected User
+ * \subsection example11 11. Display the Avatar of a connected User
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -900,7 +852,7 @@ class TeamSpeak3
  *   echo $avatar;
  * @endcode
  *
- * \subsection example14 14. Create a Simple Bot waiting for Events
+ * \subsection example12 12. Create a Simple Bot waiting for Events
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -924,7 +876,7 @@ class TeamSpeak3
  *   }
  * @endcode
  *
- * \subsection example15 15. Handle Errors using Exceptions and Custom Error Messages
+ * \subsection example13 13. Handle Errors using Exceptions and Custom Error Messages
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -947,7 +899,7 @@ class TeamSpeak3
  *   }
  * @endcode
  *
- * \subsection example16 16. Save Connection State in Persistent Session Variable
+ * \subsection example14 14. Save Connection State in Persistent Session Variable
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");
@@ -962,7 +914,7 @@ class TeamSpeak3
  *   $_SESSION["_TS3"] = serialize($ts3_VirtualServer);
  * @endcode
  *
- * \subsection example17 17. Restore Connection State from Persistent Session Variable
+ * \subsection example15 15. Restore Connection State from Persistent Session Variable
  * @code
  *   // load framework files
  *   require_once("libraries/TeamSpeak3/TeamSpeak3.php");

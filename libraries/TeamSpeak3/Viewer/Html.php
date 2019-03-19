@@ -4,8 +4,6 @@
  * @file
  * TeamSpeak 3 PHP Framework
  *
- * $Id: Text.php 10/11/2013 11:35:22 scp@orilla $
- *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -20,9 +18,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @package   TeamSpeak3
- * @version   1.1.23
  * @author    Sven 'ScP' Paulsen
- * @copyright Copyright (c) 2010 by Planet TeamSpeak. All rights reserved.
+ * @copyright Copyright (c) Planet TeamSpeak. All rights reserved.
  */
 
 /**
@@ -46,7 +43,7 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
   protected $currObj = null;
 
   /**
-   * An array filled with siblingsfor the  TeamSpeak3_Node_Abstract object which is currently
+   * An array filled with siblings for the TeamSpeak3_Node_Abstract object which is currently
    * processed.
    *
    * @var array
@@ -277,6 +274,10 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
           break;
       }
     }
+    elseif($this->currObj instanceof TeamSpeak3_Node_Client && $this->currObj->client_is_recording)
+    {
+      $extras .= " recording";
+    }
 
     return "corpus " . $this->currObj->getClass(null) . $extras;
   }
@@ -347,16 +348,24 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
       $before = array();
       $behind = array();
 
-      foreach($this->currObj->memberOf() as $group)
+      if(!$this->currObj->client_is_recording)
       {
-        if($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEFORE)
+        foreach($this->currObj->memberOf() as $group)
         {
-          $before[] = "[" . htmlspecialchars($group["name"]) . "]";
+          if($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEFORE)
+          {
+            $before[] = "[" . htmlspecialchars($group["name"]) . "]";
+          }
+          elseif($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEHIND)
+          {
+            $behind[] = "[" . htmlspecialchars($group["name"]) . "]";
+          }
         }
-        elseif($group->getProperty("namemode") == TeamSpeak3::GROUP_NAMEMODE_BEHIND)
-        {
-          $behind[] = "[" . htmlspecialchars($group["name"]) . "]";
-        }
+      }
+      else
+      {
+        $before[] = "***";
+        $behind[] = "*** [RECORDING]";
       }
 
       return implode("", $before) . " " . htmlspecialchars($this->currObj) . " " . implode("", $behind);
@@ -418,7 +427,7 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
 
           if($this->ftclient == "data:image")
           {
-            $download = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
+            $download = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
           }
 
           $this->cacheIcon[$this->currObj["virtualserver_icon_id"]] = $download;
@@ -488,7 +497,7 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
 
           if($this->ftclient == "data:image")
           {
-            $download = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
+            $download = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
           }
 
           $this->cacheIcon[$this->currObj["channel_icon_id"]] = $download;
@@ -562,7 +571,7 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
 
           if($this->ftclient == "data:image")
           {
-            $download = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
+            $download = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
           }
 
           $this->cacheIcon[$group["iconid"]] = $download;
@@ -597,7 +606,7 @@ class TeamSpeak3_Viewer_Html implements TeamSpeak3_Viewer_Interface
 
           if($this->ftclient == "data:image")
           {
-            $download = TeamSpeak3::factory("filetransfer://" . $download["host"] . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
+            $download = TeamSpeak3::factory("filetransfer://" . (strstr($download["host"], ":") !== FALSE ? "[" . $download["host"] . "]" : $download["host"]) . ":" . $download["port"])->download($download["ftkey"], $download["size"]);
           }
 
           $this->cacheIcon[$this->currObj["client_icon_id"]] = $download;
